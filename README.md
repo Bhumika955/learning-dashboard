@@ -1,36 +1,51 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Learning Dashboard
+
+A futuristic, animated student learning dashboard built with Next.js, Supabase, Tailwind CSS, and Framer Motion.
+
+## Tech Stack
+- **Next.js 15** (App Router)
+- **Supabase** (PostgreSQL database)
+- **Tailwind CSS v4**
+- **Framer Motion** (animations)
+- **Lucide React** (icons)
+
+## Architecture Decisions
+
+### Server/Client Component Split
+- `CourseGrid.tsx` is a **Server Component** — fetches data directly from Supabase using server-side credentials
+- `CourseCard.tsx`, `Sidebar.tsx`, `HeroTile.tsx`, `ActivityTile.tsx` are **Client Components** — handle animations and interactions
+
+### Data Fetching
+- Supabase is queried server-side inside `CourseGrid.tsx`
+- `React Suspense` boundaries show skeleton loaders while data loads
+- Error handling returns empty array if database connection fails
+
+### Animations
+- Framer Motion spring physics used throughout (`stiffness: 300, damping: 20`)
+- Staggered card entrance animations
+- `layoutId` used in Sidebar for smooth active state transitions
+- All animations use `transform` and `opacity` only — zero layout shifts
 
 ## Getting Started
 
-First, run the development server:
+1. Clone the repository
+2. Install dependencies:
+   \`\`\`bash
+   npm install
+   \`\`\`
+3. Copy `.env.example` to `.env.local` and add your Supabase credentials:
+   \`\`\`bash
+   cp .env.example .env.local
+   \`\`\`
+4. Run the development server:
+   \`\`\`bash
+   npm run dev
+   \`\`\`
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Environment Variables
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+See `.env.example` for required variables.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Deployment
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Deployed on Vercel. See live demo: [link]

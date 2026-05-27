@@ -2,13 +2,18 @@
 
 import { motion } from 'framer-motion'
 import { Activity } from 'lucide-react'
+import { useMemo } from 'react'
 
-// Mock activity data — 10 weeks x 7 days
-const generateActivity = () => {
-  return Array.from({ length: 70 }, () => Math.floor(Math.random() * 4))
-}
-
-const activityData = generateActivity()
+// Fixed seed data — Math.random() nahi, fixed array
+const activityData = [
+  2,3,1,0,3,2,1,3,0,2,
+  1,3,2,1,0,3,2,0,1,3,
+  0,2,3,1,2,0,3,1,2,3,
+  1,0,2,3,1,2,3,0,1,2,
+  3,2,1,0,2,3,1,2,0,3,
+  1,2,0,3,2,1,3,0,2,1,
+  0,3,2,1,3,2,0,1,3,2,
+]
 
 const intensityColors = [
   'bg-white/5',
@@ -22,14 +27,14 @@ export default function ActivityTile() {
     <motion.article
       whileHover={{ scale: 1.01 }}
       transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-      className="relative rounded-2xl p-5 overflow-hidden bg-[#111118] border border-white/5"
+      className="relative rounded-2xl p-5 overflow-hidden bg-[#111118] border border-white/5 h-full"
     >
       {/* Background Glow */}
       <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
 
       <div className="relative z-10">
         {/* Header */}
-        <div className="flex items-center gap-2 mb-4">
+        <div className="flex items-center gap-2 mb-2">
           <Activity size={16} className="text-violet-400" />
           <h2 className="text-white font-semibold text-sm">Learning Activity</h2>
         </div>
@@ -37,28 +42,27 @@ export default function ActivityTile() {
         <p className="text-gray-500 text-xs mb-4">Last 10 weeks</p>
 
         {/* Activity Grid */}
-        <div className="grid grid-cols-10 gap-1">
-          {Array.from({ length: 10 }, (_, weekIndex) =>
-            Array.from({ length: 7 }, (_, dayIndex) => {
-              const idx = weekIndex * 7 + dayIndex
-              const intensity = activityData[idx]
-              return (
-                <motion.div
-                  key={idx}
-                  initial={{ opacity: 0, scale: 0 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{
-                    delay: idx * 0.005,
-                    type: 'spring',
-                    stiffness: 300,
-                    damping: 20,
-                  }}
-                  className={`w-full aspect-square rounded-sm ${intensityColors[intensity]}`}
-                  title={`Activity level: ${intensity}`}
-                />
-              )
-            })
-          )}
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(10, 1fr)',
+            gap: '4px',
+          }}
+        >
+          {activityData.map((intensity, idx) => (
+            <motion.div
+              key={idx}
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{
+                delay: idx * 0.005,
+                type: 'spring',
+                stiffness: 300,
+                damping: 20,
+              }}
+              className={`aspect-square rounded-sm ${intensityColors[intensity]}`}
+            />
+          ))}
         </div>
 
         {/* Legend */}

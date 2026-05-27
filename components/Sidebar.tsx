@@ -24,7 +24,7 @@ export default function Sidebar() {
   const [activeId, setActiveId] = useState('dashboard')
 
   return (
-    <motion.nav
+    <motion.aside
       animate={{ width: collapsed ? 72 : 220 }}
       transition={{ type: 'spring', stiffness: 300, damping: 30 }}
       className="relative hidden md:flex flex-col h-screen bg-[#111118] border-r border-white/5 overflow-hidden flex-shrink-0"
@@ -35,9 +35,10 @@ export default function Sidebar() {
         <AnimatePresence>
           {!collapsed && (
             <motion.span
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -10 }}
+              transition={{ duration: 0.2 }}
               className="text-white font-semibold text-sm whitespace-nowrap"
             >
               LearnSpace
@@ -52,8 +53,9 @@ export default function Sidebar() {
           <button
             key={item.id}
             onClick={() => setActiveId(item.id)}
-            className="relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors z-10"
+            className="relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors z-10 w-full"
           >
+            {/* Active Background */}
             {activeId === item.id && (
               <motion.div
                 layoutId="activeNav"
@@ -61,17 +63,22 @@ export default function Sidebar() {
                 transition={{ type: 'spring', stiffness: 300, damping: 30 }}
               />
             )}
+
+            {/* Icon */}
             <item.icon
               size={18}
-              className={activeId === item.id ? 'text-violet-400' : 'text-gray-500'}
+              className={`flex-shrink-0 ${activeId === item.id ? 'text-violet-400' : 'text-gray-500'}`}
             />
+
+            {/* Label */}
             <AnimatePresence>
               {!collapsed && (
                 <motion.span
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className={activeId === item.id ? 'text-white' : 'text-gray-500'}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -10 }}
+                  transition={{ duration: 0.2 }}
+                  className={`whitespace-nowrap ${activeId === item.id ? 'text-white' : 'text-gray-500'}`}
                 >
                   {item.label}
                 </motion.span>
@@ -81,13 +88,16 @@ export default function Sidebar() {
         ))}
       </nav>
 
-      {/* Collapse Button */}
+      {/* Collapse Toggle */}
       <button
         onClick={() => setCollapsed(!collapsed)}
-        className="flex items-center justify-center m-3 p-2 rounded-xl bg-white/5 hover:bg-white/10 transition-colors text-gray-400"
+        className="flex items-center justify-center m-3 p-2 rounded-xl bg-white/5 hover:bg-white/10 transition-colors text-gray-400 cursor-pointer"
       >
-        {collapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
+        {collapsed
+          ? <ChevronRight size={16} />
+          : <ChevronLeft size={16} />
+        }
       </button>
-    </motion.nav>
+    </motion.aside>
   )
 }
